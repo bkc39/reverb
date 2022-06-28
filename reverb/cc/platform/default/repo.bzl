@@ -91,15 +91,15 @@ def _find_python_solib_path(repo_ctx):
     version = exec_result.stdout.splitlines()[-1]
     basename = "lib{}.so".format(version)
     exec_result = repo_ctx.execute(
-        ["{}-config".format(version), "--configdir"],
+        ["{}-config".format(version), "--exec-prefix"],
         quiet = True,
     )
     if exec_result.return_code != 0:
-        fail("the failure was in the configdir search!")
         fail("Could not locate python shared library path:\n{}"
             .format(exec_result.stderr))
-    solib_dir = exec_result.stdout.splitlines()[-1]
-    full_path = repo_ctx.path("{}/{}".format(solib_dir, basename))
+    exec_prefix_dir = exec_result.stdout.splitlines()[-1]
+    print(f'EXEC PREFIX DIR IS: {exec_prefix_dir}')
+    full_path = repo_ctx.path("{}/lib/{}".format(exec_prefix_dir, basename))
     if not full_path.exists:
         fail("Unable to find python shared library file:\n{}/{}"
             .format(solib_dir, basename))
