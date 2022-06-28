@@ -95,6 +95,7 @@ def _find_python_solib_path(repo_ctx):
         quiet = True,
     )
     if exec_result.return_code != 0:
+        fail("the failure was in the configdir search!")
         fail("Could not locate python shared library path:\n{}"
             .format(exec_result.stderr))
     solib_dir = exec_result.stdout.splitlines()[-1]
